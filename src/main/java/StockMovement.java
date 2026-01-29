@@ -72,4 +72,8 @@ public class StockMovement {
                 ", value=" + value +
                 '}';
     }
+
+    public double getEffectiveQuantity() {
+        return type == MovementTypeEnum.IN ? value.getQuantity() : -value.getQuantity();
+    }
 }

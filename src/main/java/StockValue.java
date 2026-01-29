@@ -10,6 +10,9 @@ public class StockValue {
 
     }
 
+    public StockValue(double total, String unit) {
+    }
+
     public Double getQuantity() {
         return quantity;
     }

@@ -71,34 +71,25 @@ public class Ingredient {
     public void setStockMovementList(List<StockMovement> stockMovementList) {
         this.stockMovementList = stockMovementList;
     }
-
     public StockValue getStockValueAt(Instant t) {
-        if (stockMovementList == null) return null;
-        Map<Unit, List<StockMovement>> unitSet = stockMovementList.stream()
-                .collect(Collectors.groupingBy(stockMovement -> stockMovement.getValue().getUnit()));
-        if (unitSet.keySet().size() > 1) {
-            throw new RuntimeException("Multiple unit found and not handle for conversion");
+        if (stockMovementList == null || stockMovementList.isEmpty()) {
+            return new StockValue(0.0, Unit.KG);  // stock 0 si aucun mouvement
         }
 
-        List<StockMovement> stockMovements = stockMovementList.stream()
-                .filter(stockMovement -> !stockMovement.getCreationDatetime().isAfter(t))
-                .toList();
-        double movementIn = stockMovements.stream()
-                .filter(stockMovement -> stockMovement.getType().equals(MovementTypeEnum.IN))
-                .flatMapToDouble(stockMovement -> DoubleStream.of(stockMovement.getValue().getQuantity()))
-                .sum();
-        double movementOut = stockMovements.stream()
-                .filter(stockMovement -> stockMovement.getType().equals(MovementTypeEnum.OUT))
-                .flatMapToDouble(stockMovement -> DoubleStream.of(stockMovement.getValue().getQuantity()))
-                .sum();
+        double total = 0.0;
+        Unit unit = Unit.KG;
 
-        StockValue stockValue = new StockValue();
-        stockValue.setQuantity(movementIn - movementOut);
-        stockValue.setUnit(unitSet.keySet().stream().findFirst().get());
+        for (StockMovement m : stockMovementList) {
+            if (!m.getCreationDatetime().isAfter(t)) {
+                total += m.getEffectiveQuantity();
+            }
+            if (unit == Unit.KG && m.getValue() != null && m.getValue().getUnit() != null) {
+                unit = m.getValue().getUnit();
+            }
+        }
 
-        return stockValue;
+        return new StockValue(total, unit);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id, name, category, price);
