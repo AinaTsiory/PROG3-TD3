@@ -1,0 +1,9 @@
+Première forme normale (1NF)
+Ce niveau de normalisation garantit que chaque colonne de vos données ne contient que des valeurs atomiques. Dans ce contexte, les valeurs atomiques signifient que chaque entrée d'une colonne est indivisible. C'est comme si l'on disait que chaque cellule d'une feuille de calcul ne devait contenir qu'une seule information. La 1NF garantit l'atomicité des données, chaque cellule de colonne ne contenant qu'une seule valeur et chaque colonne ayant un nom unique.
+
+Deuxième forme normale (2NF)
+Élimine les dépendances partielles en veillant à ce que les attributs autres que la clé ne dépendent que de la clé primaire. Cela signifie essentiellement qu'il doit y avoir une relation directe entre chaque colonne et la clé primaire, et non entre les autres colonnes.
+
+Troisième forme normale (3NF)
+Supprime les dépendances transitives en veillant à ce que les attributs non clés ne dépendent que de la clé primaire. Ce niveau de normalisation s'appuie sur la norme 2NF.
+

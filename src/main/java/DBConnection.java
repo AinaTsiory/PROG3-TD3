@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
             String jdbcURl = System.getenv("JDBC_URl"); //
             String user = System.getenv("USER"); //mini_dish_db_manager
